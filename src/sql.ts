@@ -9,7 +9,10 @@ export function sql(args: TemplateStringsArray, ...params: unknown[]) {
   return [query.trim().replace(/\s*\n\s*/g, '\n'), params]
 }
 
-export function createSqlFunction(parameter_replace_value: string) {
+export function createSqlFunction(
+  parameter_replace_value: string,
+  use_index = false,
+) {
   const sql_placeholder = parameter_replace_value
   return function sql(args: TemplateStringsArray, ...params: unknown[]) {
     let query = ''
@@ -17,6 +20,10 @@ export function createSqlFunction(parameter_replace_value: string) {
       query += args[i]
       if (i < params.length) {
         query += sql_placeholder
+
+        if (use_index) {
+          query += i
+        }
       }
     }
     return [query.trim().replace(/\s*\n\s*/g, '\n'), params]
