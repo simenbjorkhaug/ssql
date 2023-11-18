@@ -12,6 +12,7 @@ export function sql(args: TemplateStringsArray, ...params: unknown[]) {
 export function createSqlFunction(
   parameter_replace_value: string,
   use_index = false,
+  start_at_index = 1,
 ) {
   const sql_placeholder = parameter_replace_value
   return function sql(args: TemplateStringsArray, ...params: unknown[]) {
@@ -22,7 +23,7 @@ export function createSqlFunction(
         query += sql_placeholder
 
         if (use_index) {
-          query += i
+          query += i + start_at_index
         }
       }
     }
